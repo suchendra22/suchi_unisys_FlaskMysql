@@ -1,0 +1,22 @@
+version: '3.8'
+services:
+  suchidb: 
+    image: mysql:8.0 
+    container_name: suchidbc1 
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+      MYSQL_DATABASE: testdb 
+
+  suchiflaskwebapp:
+    image:  suchiflask:webappv1 
+    build: . # location of Dockerfile  . means current location 
+    ports:
+      - "3111:5000" # left side is host port and right side is container port 
+    environment:
+      FLASK_ENV: development
+      MYSQL_HOST: suchidb # db server name 
+      MYSQL_USER: root # db user name 
+      MYSQL_PASSWORD: example # db uesr password 
+      MYSQL_DATABASE: testdb
+    depends_on:
+      - suchidb
